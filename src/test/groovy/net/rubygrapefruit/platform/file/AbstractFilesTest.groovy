@@ -56,7 +56,10 @@ class AbstractFilesTest extends Specification {
     List<String> maybeWithUnicde(List<String> src) {
         if (Platform.current().isFreeBSD() && !System.getProperty("file.encoding").toLowerCase().contains("utf-8")) {
             // Don't test unicode names
-            return src.collect { str -> str.collectReplacements { ch -> ch > 127 ? '-' : ch } }
+            return src.collect { str ->
+                str.collectReplacements { ch ->
+                    ch > 127 ? '-' : ch
+                } }
         } else {
             return src
         }
