@@ -24,6 +24,7 @@ import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.PosixFileAttributes
+
 import static java.nio.file.attribute.PosixFilePermission.*
 
 class AbstractFilesTest extends Specification {
@@ -54,12 +55,15 @@ class AbstractFilesTest extends Specification {
     }
 
     List<String> maybeWithUnicde(List<String> src) {
+        return src.collect { maybeWithUnicde(it) }
+    }
+
+    String maybeWithUnicde(String src) {
         if (Platform.current().isFreeBSD() && !System.getProperty("file.encoding").toLowerCase().contains("utf-8")) {
             // Don't test unicode names
-            return src.collect { str ->
-                str.collectReplacements { ch ->
-                    ch > 127 ? '-' : null
-                } }
+            return str.collectReplacements { ch ->
+                ch > 127 ? '-' : null
+            }
         } else {
             return src
         }
@@ -83,7 +87,7 @@ class AbstractFilesTest extends Specification {
             try {
                 createDirectorySymbolicLink(linkFile, targetFile.name)
                 return true
-            } catch(ignored) {
+            } catch (ignored) {
                 return false
             }
         }
