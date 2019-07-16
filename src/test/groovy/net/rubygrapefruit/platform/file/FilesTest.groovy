@@ -27,13 +27,13 @@ import static org.junit.Assume.assumeFalse
 
 abstract class FilesTest extends AbstractFilesTest {
     @Shared
-    def names = [
+    def names = maybeWithUnicde([
             "test.txt",
             "test\u03b1\u2295.txt",
             "nested/test",
             // Long name
-            (0..25).inject("") { s, v -> s + "/1234567890" }
-    ]
+            (0..25).inject(".") { s, v -> s + "/1234567890" }
+    ])
     @Rule
     TemporaryFolder tmpDir
     final def files = Native.get(Files.class)
@@ -108,7 +108,7 @@ abstract class FilesTest extends AbstractFilesTest {
     }
 
     @Unroll
-    def "can stat a file"() {
+    def "can stat a file - #fileName"() {
         def dir = tmpDir.newFolder()
         def testFile = new File(dir, fileName)
         testFile.parentFile.mkdirs()
