@@ -58,7 +58,7 @@ class AbstractFilesTest extends Specification {
             // Don't test unicode names
             return src.collect { str ->
                 str.collectReplacements { ch ->
-                    ch > 127 ? '-' : ch
+                    ch > 127 ? '-' : null
                 } }
         } else {
             return src
