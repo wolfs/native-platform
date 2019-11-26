@@ -18,6 +18,7 @@ import java.util.concurrent.Callable;
 public class UploadPlugin implements Plugin<Project> {
     @Override
     public void apply(final Project project) {
+        project.getPlugins().apply(NativePlatformComponentPlugin.class);
         project.getPlugins().apply("maven-publish");
         final BintrayCredentials credentials = project.getExtensions().create("bintray", BintrayCredentials.class);
         if (project.hasProperty("bintrayUserName")) {

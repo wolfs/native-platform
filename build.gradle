@@ -291,15 +291,6 @@ model {
                 }
                 def variantName = targetPlatform.name.replace('_', '-')
                 variantNames << variantName
-                project.dependencies {
-                    runtimeOnly("${project.group}:native-platform-${variantName}:${project.version}")
-                }
-                project.configurations {
-                    [apiElements, runtimeElements]*.outgoing {
-                        capability("${project.group}:native-platform-${variantName}-support:${project.version}")
-                    }
-                }
-
                 if (!buildable) {
                     return
                 }
@@ -364,7 +355,7 @@ publishing {
             groupId = project.group
             artifactId = jar.baseName
             version = project.version
-            from(components.java)
+            from(components.nativePlatform)
         }
     }
 }
